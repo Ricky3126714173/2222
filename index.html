@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realtime PSI Data - Singapore</title>
+  <link rel="stylesheet" href="styles-blue.css">
+</head>
+<body>
+  <header>
+    <h1>Singapore Realtime PSI Data</h1>
+    <p>Data Source: <a href="https://api.data.gov.sg/v1/environment/psi" target="_blank">data.gov.sg PSI API</a></p>
+  </header>
+
+  <main>
+    <section class="status">
+      <p><strong>Last Update:</strong> <span id="lastUpdate">Loading...</span></p>
+      <p><strong>API Status:</strong> <span id="apiStatus">Connecting...</span></p>
+    </section>
+
+    <table id="psiTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <footer>
+    <p>Developed for API Connection Demonstration | data.gov.sg Environment PSI</p>
+  </footer>
+
+  <script>
+    const API_URL = 'https://api.data.gov.sg/v1/environment/psi';
+
+    async function fetchPSIData() {
+      try {
+        document.getElementById('apiStatus').textContent = 'Fetching...';
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error('HTTP Error ' + response.status);
+
+        const data = await response.json();
+        const item = data.items[0];
+        const readings = item.readings;
+
+        document.getElementById('lastUpdate').textContent = new Date(item.update_timestamp).toLocaleString();
+        document.getElementById('apiStatus').textContent = 'OK';
+
+        const regions = Object.keys(readings.psi_twenty_four_hourly);
+        const metrics = Object.keys(readings);
+
+        const thead = document.querySelector('#psiTable thead');
+        const tbody = document.querySelector('#psiTable tbody');
+
+        // header row
+        thead.innerHTML = '<tr><th>Reading Type</th>' + regions.map(r => `<th>${r}</th>`).join('') + '</tr>';
+
+        // body rows
+        tbody.innerHTML = metrics.map(m => {
+          const row = readings[m];
+          return `<tr><td>${m}</td>` + regions.map(r => `<td>${row[r]}</td>`).join('') + '</tr>';
+        }).join('');
+
+      } catch (err) {
+        document.getElementById('apiStatus').textContent = 'Error';
+        document.getElementById('psiTable').innerHTML = `<tr><td colspan='8'>Error loading data: ${err.message}</td></tr>`;
+      }
+    }
+
+    fetchPSIData();
+    setInterval(fetchPSIData, 60000); // auto-refresh every 60 seconds
+  </script>
+</body>
+</html>
