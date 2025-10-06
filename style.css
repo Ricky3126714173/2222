@@ -1,0 +1,84 @@
+/* styles-blue.css - 蓝色主题样式 */
+:root {
+  --primary: #1e40af;
+  --secondary: #60a5fa;
+  --light-bg: #f0f7ff;
+  --text: #0f172a;
+  --border: #cbd5e1;
+  --table-bg: #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text);
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  background-color: var(--primary);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+header a {
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+main {
+  margin-top: 20px;
+  background: var(--table-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.status p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+#psiTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 15px;
+}
+
+#psiTable th {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px;
+}
+
+#psiTable td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+#psiTable tr:nth-child(even) {
+  background-color: #e0f2fe;
+}
+
+#psiTable tr:hover {
+  background-color: var(--secondary);
+  color: white;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #475569;
+}
